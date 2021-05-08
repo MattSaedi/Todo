@@ -15,6 +15,7 @@ struct ContentView: View {
     
     @FetchRequest(entity: Todo.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Todo.name, ascending: true)]) var todos: FetchedResults<Todo>
     
+    @State private var showingSettingsView:Bool = false
     @State private var showingAddTodoView : Bool = false
     @State private var animatingButton : Bool = false
     // MARK: - BODY
@@ -36,12 +37,13 @@ struct ContentView: View {
                     leading: EditButton(),
                     trailing:
                     Button(action:{
-                        self.showingAddTodoView.toggle()
+                        self.showingSettingsView.toggle()
                     }){
-                        Image(systemName: "plus")
+                        Image(systemName: "paintbrush")
+                            .imageScale(.large)
                     }//: ADD BUTTON
-                    .sheet(isPresented: $showingAddTodoView, content: {
-                        AddTodoView().environment(\.managedObjectContext, self.managedObjectContext)
+                    .sheet(isPresented: $showingSettingsView, content: {
+                        SettingsView()
                     })
                 )
                 //MARK: - NO TODO ITEMS
@@ -64,12 +66,12 @@ struct ContentView: View {
                             .fill(Color.blue)
                             .opacity(self.animatingButton ? 0.15 : 0)
                             .scaleEffect(self.animatingButton ? 1 : 0)
-                            .frame(width:88,height: 88,alignment: .center)t
+                            .frame(width:88,height: 88,alignment: .center)
                     }
-                    .animation(Animation
-                                .easeInOut(duration: 2)
-                                .repeatForever(autoreverses: true)
-                    )
+//                    .animation(Animation
+//                                .easeInOut(duration: 2)
+//                                .repeatForever(autoreverses: true)
+//                    )
                     
                     Button(action: {
                         self.showingAddTodoView.toggle()
