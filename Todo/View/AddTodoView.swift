@@ -19,6 +19,9 @@ struct AddTodoView: View {
     @State private var errorShowing:Bool = false
     @State private var errorTitle:String = ""
     @State private var errorMessage:String = ""
+    // THEME
+    @ObservedObject var theme = ThemeSettings()
+    var themes: [Theme] = themeData
     // MARK: - BODY
     var body: some View {
         NavigationView{
@@ -61,7 +64,7 @@ struct AddTodoView: View {
                             .font(.system(size:24,weight:.bold,design: .default))
                             .padding()
                             .frame(minWidth:0,maxWidth:.infinity)
-                            .background(Color.blue)
+                            .background(themes[self.theme.themeSettings].themeColor)
                             .cornerRadius(9)
                             .foregroundColor(.white)
                     }//: SAVE BUTTON
@@ -82,6 +85,8 @@ struct AddTodoView: View {
                 Alert(title: Text(errorTitle),message: Text(errorMessage),dismissButton: .default(Text("OK")))
             }
         } //:NAVIGATION
+        .accentColor(themes[self.theme.themeSettings].themeColor)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 // MARK: - PREVIEW
